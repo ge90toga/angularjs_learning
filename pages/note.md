@@ -1,1 +1,1 @@
-### Angular 
+Dependency Injection survived code minification
