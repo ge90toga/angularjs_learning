@@ -40,9 +40,19 @@
 
     <div ng-controller="mainController">
          <div>
-             <label>What is your name?</label>
-             <input type="text" ng-model="handle">
-             <!-- creates a two way data binding (glue)-->
+             <label>Give me 5 characters name!</label>
+             <input style="margin-left: 5px" type="text" ng-model="handle">
+             <!--ng-if directives-->
+             <!--<div class="alert alert-warning" ng-if="handle.length !== charlen">Must be 5 characters!</div>-->
+             <!-- ng-show will add ng-hide into the class attribute if the condition is not satisfied-->
+             <!--<div class="alert alert-warning" ng-show="handle.length !== charlen">Must be 5 characters!</div>-->
+             <!--what if you want to show different class depending on the condition?-->
+             <div class="alert" ng-class="{'alert-warning': handle.length < charlen, 'alert-danger': handle.length > charlen}">
+                 <div ng-show="handle.length < charlen"> less than 5</div>
+                 <div ng-show="handle.length > charlen"> more than 5</div>
+             </div>
+
+
          </div>
 
         <h1>twitter.com/{{lowercaseHandle()}}</h1>
