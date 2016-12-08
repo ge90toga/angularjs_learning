@@ -1,18 +1,15 @@
-var myApp = angular.module('myApp', []); // modules from other files (not angular.js)
-
-myApp.controller('mainController', ["$scope","$filter","$log","$http", function ($scope,$filter,$log,$http) {
-    $scope.handle = ''; // declaration here is optional since the view has ng-model directive
-
-    $scope.lowercaseHandle = function(){
-        return $filter("lowercase")($scope.handle);
-    }
-
-    $scope.charlen = 5;
-
-
-
+angular.module('myApp', [])
+    .controller('mainController', ["$scope","$filter","$log","$http", function ($scope) {
+        $scope.name = "scope1";
+}])
+    .controller('secondController',["$scope",function ($scope) {
+        $scope.name = "scope2";
+}])
+    .controller('insideMain',["$scope",function ($scope) {
+        console.log($scope)
 
 }]);
 
-// This is the compressed version, angular can inject it only if you keep the order correct
-//myApp.controller("mainController",["$scope","$log",function(a,b){}]);
+
+// they all use $scope, but they are not same $scope object
+// $scope hierarchy is defined by view's ng-controller directive
