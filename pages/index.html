@@ -39,17 +39,13 @@
 <div class="container">
 
     <div ng-controller="mainController">
-         <form name="myForm">
-           <label>
-             Enter text:
-             <input type="email" ng-model="field" name="myField" required minlength="5" />
-           </label>
-           <div ng-messages="myForm.myField.$error" role="alert">
-               <div class="alert alert-warning" ng-message="required">Please enter a value for this field.</div>
-               <div class="alert alert-warning" ng-message="minlength">Min len 5</div>
-          </div>
-         </form>
+         <div>
+             <label>What is your name?</label>
+             <input type="text" ng-model="handle">
+             <!-- creates a two way data binding (glue)-->
+         </div>
 
+        <h1>twitter.com/{{lowercaseHandle()}}</h1>
     </div>
 
 </div>
