@@ -1,29 +1,61 @@
-'use strict';
+var myApp = angular.module('myApp', ['ngRoute']);
 
-// Declare app level module which depends on views, and components
-angular.module('myApp', ['ngRoute'])
-    .config(function ($routeProvider) {
-        $routeProvider
-        .when('/',{
-            templateUrl:'pages/main.html',
-            controller:'mainController'
+myApp.config(function ($routeProvider) {
+    $routeProvider
+        .when('/', {
+            templateUrl: 'pages/main.html',
+            controller: 'mainController'
         })
 
-        .when('/second',{
-            templateUrl:'pages/second.html',
-            controller:'secondController'
+        .when('/second', {
+            templateUrl: 'pages/second.html',
+            controller: 'secondController'
         })
 
-        .when('/second/:num/:num2',{
-            templateUrl:'pages/second.html',
-            controller:'secondController'
-        });
+        .when('/second/:num', {
+            templateUrl: 'pages/second.html',
+            controller: 'secondController'
+        })
+});
 
-    })
-    .controller('mainController',["$scope",function ($scope) {
-        $scope.name = "name of main";
-    }])
-    .controller('secondController',["$scope","$routeParams",function ($scope,$routeParams) {
-        $scope.num = $routeParams.num || "default 1";
-        $scope.num2 = $routeParams.num2 || "default 2";
-    }]);
+
+
+myApp.controller('mainController', ['$scope', '$log', 'nameService', function($scope, $log, nameService) {
+    $log.info('main Controller is on');
+    $scope.name = nameService.name;
+
+    $scope.$watch('name', function() {
+        nameService.name = $scope.name;
+    });
+
+    $log.log(nameService.name);
+    $log.log(nameService.namelength());
+    $log.info('main Controller is ends...');
+
+}]);
+
+myApp.controller('secondController', ['$scope', '$log', '$routeParams', 'nameService', function($scope, $log, $routeParams, nameService) {
+    // when this scope grabs view, angular will execute this line by line
+    $log.info('second Controller is on');
+    $scope.num = $routeParams.num || 1;
+
+    $scope.name = nameService.name;
+
+    $scope.$watch('name', function() {
+        nameService.name = $scope.name;
+    });
+
+    $log.info('second Controller ends');
+}]);
+
+// define a service!
+// order of declaring service doesn't matter
+myApp.service('nameService', function() {
+
+    var self = this;
+    this.name = 'Kindle';
+    this.namelength = function() {
+        return self.name.length;
+    };
+
+});
