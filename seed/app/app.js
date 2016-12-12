@@ -59,3 +59,12 @@ myApp.service('nameService', function() {
     };
 
 });
+
+// create a custom directive:
+myApp.directive("searchResult", function() {
+    return {
+        restrict: 'AE', //attribute and element tag gets convert to the following template others: C class M comment
+        templateUrl: 'directives/search-result.html', // use a template url
+        replace: true // replace the parent tag or not
+    }
+});
