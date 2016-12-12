@@ -18,34 +18,18 @@ myApp.config(function ($routeProvider) {
         })
 });
 
-
-
-myApp.controller('mainController', ['$scope', '$log', 'nameService', function($scope, $log, nameService) {
-    $log.info('main Controller is on');
-    $scope.name = nameService.name;
-
-    $scope.$watch('name', function() {
-        nameService.name = $scope.name;
-    });
-
-    $log.log(nameService.name);
-    $log.log(nameService.namelength());
-    $log.info('main Controller is ends...');
+myApp.controller('mainController', ['$scope', '$log', 'nameService', function($scope) {
+    $scope.persons =
+        [
+            {name: 'John Doe', address: '555 Main St., New York, NY 11111'},
+            {name: 'Linus Quan', address: 'High St, Sydney'},
+            {name: 'Taylor Swift', address: 'New York 1234'}
+        ]
 
 }]);
 
 myApp.controller('secondController', ['$scope', '$log', '$routeParams', 'nameService', function($scope, $log, $routeParams, nameService) {
-    // when this scope grabs view, angular will execute this line by line
-    $log.info('second Controller is on');
-    $scope.num = $routeParams.num || 1;
 
-    $scope.name = nameService.name;
-
-    $scope.$watch('name', function() {
-        nameService.name = $scope.name;
-    });
-
-    $log.info('second Controller ends');
 }]);
 
 // define a service!
@@ -65,6 +49,10 @@ myApp.directive("searchResult", function() {
     return {
         restrict: 'AE', //attribute and element tag gets convert to the following template others: C class M comment
         templateUrl: 'directives/search-result.html', // use a template url
-        replace: true // replace the parent tag or not
+        replace: true ,// replace the parent tag or not
+        scope:{
+            personName:'@', // means we are passing a text property through the hole
+            personAddress: "@"
+        }
     }
 });
