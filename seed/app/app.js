@@ -24,7 +24,11 @@ myApp.controller('mainController', ['$scope', '$log', 'nameService', function($s
             {name: 'John Doe', address: '555 Main St., New York, NY 11111'},
             {name: 'Linus Quan', address: 'High St, Sydney'},
             {name: 'Taylor Swift', address: 'New York 1234'}
-        ]
+        ];
+
+    $scope.changeData = function () {
+        $scope.persons.splice(0,1);
+    }
 
 }]);
 
@@ -50,9 +54,9 @@ myApp.directive("searchResult", function() {
         restrict: 'AE', //attribute and element tag gets convert to the following template others: C class M comment
         templateUrl: 'directives/search-result.html', // use a template url
         replace: true ,// replace the parent tag or not
-        scope:{
-            personName:'@', // means we are passing a text property through the hole
-            personAddress: "@"
+        scope:{ // isolated scope
+            personObject:'=' // pass a = two way binding (type of hole! is a object we don't need {{}})
+            // this is a two way binding so can be a little dangerous!!!
         }
     }
 });
