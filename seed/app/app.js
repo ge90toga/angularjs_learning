@@ -19,16 +19,23 @@ myApp.config(function ($routeProvider) {
 });
 
 myApp.controller('mainController', ['$scope', '$log', 'nameService', function($scope) {
-    $scope.persons =
-        [
-            {name: 'John Doe', address: '555 Main St., New York, NY 11111'},
-            {name: 'Linus Quan', address: 'High St, Sydney'},
-            {name: 'Taylor Swift', address: 'New York 1234'}
-        ];
+    $scope.persons = [{
+        name: 'John Doe',
+        address: '555 Main St.',
+        city: 'New York',
+        state: 'NY',
+        zip: '11111'
+    },{
+        name: 'Linus',
+        address: 'Kevin street',
+        city: 'Sydney',
+        state: 'NSW',
+        zip: '12345'
+    } ]
 
-    $scope.changeData = function () {
-        $scope.persons.splice(0,1);
-    }
+    $scope.formattedAddress = function(person) {
+        return person.address + ', ' + person.city + ', ' + person.state + ' ' + person.zip;
+    };
 
 }]);
 
@@ -55,8 +62,8 @@ myApp.directive("searchResult", function() {
         templateUrl: 'directives/search-result.html', // use a template url
         replace: true ,// replace the parent tag or not
         scope:{ // isolated scope
-            personObject:'=' // pass a = two way binding (type of hole! is a object we don't need {{}})
-            // this is a two way binding so can be a little dangerous!!!
+            personObject:'=', // pass a = two way binding (type of hole! is a object we don't need {{}})
+            formattedAddressFunction: "&" // pass a function
         }
     }
 });
