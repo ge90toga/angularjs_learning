@@ -18,80 +18,69 @@ myApp.config(function ($routeProvider) {
         })
 });
 
-myApp.controller('mainController', ['$scope', '$log', 'nameService', function($scope) {
+myApp.controller('mainController', ['$scope', '$log', 'nameService', function ($scope) {
     $scope.persons = [{
         name: 'John Doe',
         address: '555 Main St.',
         city: 'New York',
         state: 'NY',
         zip: '11111'
-    },{
+    }, {
         name: 'Linus',
         address: 'Kevin street',
         city: 'Sydney',
         state: 'NSW',
         zip: '12345'
-    },{
+    }, {
         name: 'Jane Doe',
         address: 'Kevin street',
         city: 'Sydney',
         state: 'NSW',
         zip: '12345'
-    } ]
+    }]
 
-    $scope.formattedAddress = function(person) {
+    $scope.formattedAddress = function (person) {
         return person.address + ', ' + person.city + ', ' + person.state + ' ' + person.zip;
     };
 
 }]);
 
-myApp.controller('secondController', ['$scope', '$log', '$routeParams', 'nameService', function($scope, $log, $routeParams, nameService) {
+myApp.controller('secondController', ['$scope', '$log', '$routeParams', 'nameService', function ($scope, $log, $routeParams, nameService) {
 
 }]);
 
 // define a service!
 // order of declaring service doesn't matter
-myApp.service('nameService', function() {
+myApp.service('nameService', function () {
 
     var self = this;
     this.name = 'Kindle';
-    this.namelength = function() {
+    this.namelength = function () {
         return self.name.length;
     };
 
 });
 
 // create a custom directive:
-myApp.directive("searchResult", function() {
+myApp.directive("searchResult", function () {
     return {
         restrict: 'AE', //attribute and element tag gets convert to the following template others: C class M comment
         templateUrl: 'directives/search-result.html', // use a template url
-        replace: true ,// replace the parent tag or not
-        scope:{ // isolated scope
-            personObject:'=', // pass a = two way binding (type of hole! is a object we don't need {{}})
+        replace: true,// replace the parent tag or not
+        scope: { // isolated scope
+            personObject: '=', // pass a = two way binding (type of hole! is a object we don't need {{}})
             formattedAddressFunction: "&" // pass a function
         },
-        compile: function(elem, attrs){
-            console.log(elem); // change to elem.html();
-            // compile function run only once for same directive
-            // It just "initialise" the template and allow you to do some change here to element and attr (rarely used)
-            return{ // Link goes here, it can be divided as pre-linking and post-linking
-
-                pre: function (scope,elements,attrs) {
-                    // pre-linking runs at the opening tag
-                },
-
-                post: function(scope, elements, attrs) {
-                    // post-linking runs at the ending tag (Usually used here!)
-                    console.log('Post-linking...');
-                    console.log(scope);
-                    // we can change attribute, scope(model), element during linking
-                    if (scope.personObject.name == 'Jane Doe') {
-                        elements.removeAttr('class');
-                    }
-                    console.log(elements);
-                }
+        link: function (scope, elements, attrs) {
+            // post-linking runs at the ending tag (Usually used here!)
+            console.log('Post-linking...');
+            console.log(scope);
+            // we can change attribute, scope(model), element during linking
+            if (scope.personObject.name == 'Jane Doe') {
+                elements.removeAttr('class');
             }
-        },
+            console.log(elements);
+
+        }
     }
 });
