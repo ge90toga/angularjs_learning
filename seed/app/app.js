@@ -31,6 +31,12 @@ myApp.controller('mainController', ['$scope', '$log', 'nameService', function($s
         city: 'Sydney',
         state: 'NSW',
         zip: '12345'
+    },{
+        name: 'Jane Doe',
+        address: 'Kevin street',
+        city: 'Sydney',
+        state: 'NSW',
+        zip: '12345'
     } ]
 
     $scope.formattedAddress = function(person) {
@@ -64,6 +70,28 @@ myApp.directive("searchResult", function() {
         scope:{ // isolated scope
             personObject:'=', // pass a = two way binding (type of hole! is a object we don't need {{}})
             formattedAddressFunction: "&" // pass a function
-        }
+        },
+        compile: function(elem, attrs){
+            console.log(elem); // change to elem.html();
+            // compile function run only once for same directive
+            // It just "initialise" the template and allow you to do some change here to element and attr (rarely used)
+            return{ // Link goes here, it can be divided as pre-linking and post-linking
+
+                pre: function (scope,elements,attrs) {
+                    // pre-linking runs at the opening tag
+                },
+
+                post: function(scope, elements, attrs) {
+                    // post-linking runs at the ending tag (Usually used here!)
+                    console.log('Post-linking...');
+                    console.log(scope);
+                    // we can change attribute, scope(model), element during linking
+                    if (scope.personObject.name == 'Jane Doe') {
+                        elements.removeAttr('class');
+                    }
+                    console.log(elements);
+                }
+            }
+        },
     }
 });
