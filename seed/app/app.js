@@ -81,6 +81,7 @@ myApp.directive("searchResult", function () {
             }
             console.log(elements);
 
-        }
+        },
+        transclude: true
     }
 });

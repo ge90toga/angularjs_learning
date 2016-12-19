@@ -1,43 +1,57 @@
-### Compile and Link
-- The Compile and Link term in angular is not what they do in computer science!
-
-### How it works?
-- Compile basically just instantiate template;
-- you can modify the template during compile but it is rarely used;
-- linking is the actual process of converting "compiled" directive to "view".
+### Transclusion
+- a big topic
+- basically it is including one document inside another;
+- one way to do simple transclusion
+Directive:
 ```javascript
 // create a custom directive:
-myApp.directive("searchResult", function() {
+myApp.directive("searchResult", function () {
     return {
         restrict: 'AE', //attribute and element tag gets convert to the following template others: C class M comment
         templateUrl: 'directives/search-result.html', // use a template url
-        replace: true ,// replace the parent tag or not
-        scope:{ // isolated scope
-            personObject:'=', // pass a = two way binding (type of hole! is a object we don't need {{}})
+        replace: true,// replace the parent tag or not
+        scope: { // isolated scope
+            personObject: '=', // pass a = two way binding (type of hole! is a object we don't need {{}})
             formattedAddressFunction: "&" // pass a function
         },
-        compile: function(elem, attrs){
-            console.log(elem); // change to elem.html();
-            // compile function run only once for same directive
-            // It just "initialise" the template and allow you to do some change here to element and attr (rarely used)
-            return{ // Link goes here, it can be divided as pre-linking and post-linking
-
-                pre: function (scope,elements,attrs) {
-                    // pre-linking runs at the opening tag
-                },
-
-                post: function(scope, elements, attrs) {
-                    // post-linking runs at the ending tag (Usually used here!)
-                    console.log('Post-linking...');
-                    console.log(scope);
-                    // we can change attribute, scope(model), element during linking
-                    if (scope.personObject.name == 'Jane Doe') {
-                        elements.removeAttr('class');
-                    }
-                    console.log(elements);
-                }
+        link: function (scope, elements, attrs) {
+            // post-linking runs at the ending tag (Usually used here!)
+            console.log('Post-linking...');
+            console.log(scope);
+            // we can change attribute, scope(model), element during linking
+            if (scope.personObject.name == 'Jane Doe') {
+                elements.removeAttr('class');
             }
+            console.log(elements);
+
         },
+        transclude: true // set transclusion true
     }
 });
+
 ```
+Directive template
+```html
+<a href="#" class="list-group-item">
+    <h4 class="list-group-item-heading">{{ personObject.name }}</h4>
+    <p class="list-group-item-text">
+        {{ formattedAddressFunction({ aperson: personObject }) }}
+    </p>
+    <small ng-transclude></small> <!-- include components (taking the advantage of html formatting)-->
+</a>
+```
+Template View:
+```html
+<h1> This is Main</h1>
+<hr/>
+<input type="text" ng-model="name" />
+
+<h3>Search Results</h3>
+<div class="list-group">
+    <search-result ng-repeat="person in persons" person-object="person" formatted-address-function="formattedAddress(aperson)">
+        *Things being transcluded
+    </search-result>
+</div>
+```
+More Detail in:
+http://teropa.info/blog/2015/06/09/transclusion.html
